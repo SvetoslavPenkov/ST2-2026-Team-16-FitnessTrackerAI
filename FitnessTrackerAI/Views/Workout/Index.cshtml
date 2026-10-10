@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Workout>
+
+<h2>История на тренировките</h2>
+
+<!-- Форма за филтриране (Select with Filter) -->
+<form method="get" asp-action="Index">
+    <input type="text" name="muscleGroupFilter" placeholder="Филтър по мускулна група..." value="@ViewBag.CurrentFilter" />
+    <button type="submit">Филтрирай</button>
+    <a asp-action="Index">Изчисти</a>
+</form>
+
+<p><a asp-action="Create">+ Добави нова тренировка</a></p>
+
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Упражнение</th>
+        <th>Мускулна група</th>
+        <th>Серии</th>
+        <th>Повторения</th>
+        <th>Тежест</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.ExerciseName</td>
+            <td>@item.MuscleGroup</td>
+            <td>@item.Sets</td>
+            <td>@item.Reps</td>
+            <td>@item.Weight</td>
+        </tr>
+    }
+</table>
+
+<p style="color: green;">@ViewBag.Status</p>
