@@ -5,6 +5,9 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
+FitnessTrackerAI.Models.DatabaseConnectionManager.Instance.Configure(app.Configuration);
+FitnessTrackerAI.Models.GeminiClientManager.Instance.Configure(app.Configuration);
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

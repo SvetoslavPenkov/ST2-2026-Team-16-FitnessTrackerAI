@@ -1,0 +1,18 @@
+@model Workout
+
+<h2>Изтриване на тренировка</h2>
+
+<p>Сигурен ли си, че искаш да изтриеш тази тренировка?</p>
+
+<ul>
+    <li>Упражнение: @Model.ExerciseName</li>
+    <li>Мускулна група: @Model.MuscleGroup</li>
+    <li>Серии x повторения: @Model.Sets x @Model.Reps</li>
+    <li>Тежест: @Model.Weight кг</li>
+</ul>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <button type="submit">Изтрий</button>
+    <a asp-action="Index">Отказ</a>
+</form>

@@ -5,20 +5,15 @@ namespace FitnessTrackerAI.Controllers
 {
     public class WorkoutController : Controller
     {
-        // Временен списък за демо (вместо истинска БД засега)
-        private static List<Workout> _workouts = new List<Workout>();
+        private readonly WorkoutRepository _repository = WorkoutRepository.Instance;
 
-        // 1. SELECT WITH FILTER: Показва списъка и може да филтрира по мускулна група
         [HttpGet]
         public IActionResult Index(string muscleGroupFilter)
         {
-            // Използваме нашия Singleton тук за демонстрация
             var singletonTest = DatabaseConnectionManager.Instance;
-            ViewBag.Status = "Singleton работи! Връзка: " + singletonTest.ConnectionString;
 
-            var workouts = _workouts.AsQueryable();
+            var workouts = _repository.GetAll().AsQueryable();
 
-            // Ако е въведен филтър, филтрираме списъка
             if (!string.IsNullOrEmpty(muscleGroupFilter))
             {
                 workouts = workouts.Where(w => w.MuscleGroup.Contains(muscleGroupFilter, StringComparison.OrdinalIgnoreCase));
@@ -28,27 +23,65 @@ namespace FitnessTrackerAI.Controllers
             return View(workouts.ToList());
         }
 
-        // 2. INSERT (GET): Отваря формата за добавяне
         [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
-        // 3. INSERT (POST): Записва данните, изпратени от формата
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(Workout workout)
         {
             if (ModelState.IsValid)
             {
-                workout.Id = _workouts.Count + 1;
                 workout.Date = DateTime.Now;
-                _workouts.Add(workout); // Добавяне в списъка (Insert)
+                _repository.Add(workout);
 
                 return RedirectToAction(nameof(Index));
             }
             return View(workout);
         }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var workout = _repository.GetById(id);
+            if (workout == null) return NotFound();
+            return View(workout);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Workout workout)
+        {
+            if (!ModelState.IsValid) return View(workout);
+
+            if (!_repository.Update(workout)) return NotFound();
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var workout = _repository.GetById(id);
+            if (workout == null) return NotFound();
+            return View(workout);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            _repository.Delete(id);
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Advice()
+        {
+            ViewBag.Advice = await GeminiClientManager.Instance.GetWorkoutAdviceAsync(_repository.GetAll());
+            return View();
+        }
     }
-    
 }
