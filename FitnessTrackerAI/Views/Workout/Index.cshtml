@@ -2,14 +2,16 @@
 
 <h2>История на тренировките</h2>
 
-<!-- Форма за филтриране (Select with Filter) -->
 <form method="get" asp-action="Index">
     <input type="text" name="muscleGroupFilter" placeholder="Филтър по мускулна група..." value="@ViewBag.CurrentFilter" />
     <button type="submit">Филтрирай</button>
     <a asp-action="Index">Изчисти</a>
 </form>
 
-<p><a asp-action="Create">+ Добави нова тренировка</a></p>
+<p>
+    <a asp-action="Create">+ Добави нова тренировка</a> |
+    <a asp-action="Advice">AI съвет</a>
+</p>
 
 <table border="1" cellpadding="5">
     <tr>
@@ -18,6 +20,8 @@
         <th>Серии</th>
         <th>Повторения</th>
         <th>Тежест</th>
+        <th>Дата</th>
+        <th>Действия</th>
     </tr>
     @foreach (var item in Model)
     {
@@ -27,6 +31,11 @@
             <td>@item.Sets</td>
             <td>@item.Reps</td>
             <td>@item.Weight</td>
+            <td>@item.Date.ToString("dd.MM.yyyy")</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Редактирай</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Изтрий</a>
+            </td>
         </tr>
     }
 </table>
