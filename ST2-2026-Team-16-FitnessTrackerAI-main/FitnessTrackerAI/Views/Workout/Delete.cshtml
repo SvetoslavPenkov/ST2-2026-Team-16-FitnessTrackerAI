@@ -1,0 +1,24 @@
+@model FitnessTrackerAI.Models.Workout
+@{
+    ViewData["Title"] = "Изтрий Тренировка";
+}
+
+<h3 class="text-danger">Сигурни ли сте, че искате да изтриете този запись?</h3>
+
+<div class="card col-md-6 mt-3 p-3">
+    <h4>@Model.Title</h4>
+    <p><strong>Категория:</strong> @Model.Category</p>
+    <p><strong>Времетраене:</strong> @Model.DurationMinutes мин.</p>
+    <p><strong>Изгорени калории:</strong> @Model.CaloriesBurned kcal</p>
+    <p><strong>Дата:</strong> @Model.Date.ToShortDateString()</p>
+    @if (!string.IsNullOrEmpty(Model.Notes))
+    {
+        <p><strong>Бележки:</strong> @Model.Notes</p>
+    }
+
+    <form asp-action="Delete" method="post" class="mt-2">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Потвърди Изтриването</button>
+        <a asp-action="Index" class="btn btn-secondary">Отказ</a>
+    </form>
+</div>

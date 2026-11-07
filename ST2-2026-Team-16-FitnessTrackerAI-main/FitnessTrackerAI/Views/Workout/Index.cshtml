@@ -1,0 +1,56 @@
+﻿@model IEnumerable<FitnessTrackerAI.Models.Workout>
+@{
+    ViewData["Title"] = "Моите Тренировки";
+}
+
+<h2 class="mb-3">Моите Тренировки</h2>
+
+<form method="get" class="row g-3 mb-4">
+    <div class="col-md-4">
+        <input type="text" name="searchKeyword" value="@ViewBag.CurrentSearch" class="form-control" placeholder="Търсене по заглавие или бележка..." />
+    </div>
+    <div class="col-md-3">
+        <select name="categoryFilter" class="form-select">
+            <option value="">-- Всички Категории --</option>
+            <option value="Кардио">Кардио</option>
+            <option value="Силова">Силова</option>
+            <option value="Йога">Йога</option>
+            <option value="Кросфит">Кросфит</option>
+        </select>
+    </div>
+    <div class="col-md-3">
+        <button type="submit" class="btn btn-primary w-100">Филтрирай</button>
+    </div>
+    <div class="col-md-2 text-end">
+        <a asp-action="Create" class="btn btn-success w-100">+ Нова</a>
+    </div>
+</form>
+
+<table class="table table-striped align-middle">
+    <thead>
+        <tr>
+            <th>Заглавие</th>
+            <th>Категория</th>
+            <th>Времетраене</th>
+            <th>Калории</th>
+            <th>Дата</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td><span class="badge bg-info text-dark">@item.Category</span></td>
+                <td>@item.DurationMinutes мин.</td>
+                <td>@item.CaloriesBurned kcal</td>
+                <td>@item.Date.ToString("dd.MM.yyyy")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Редактирай</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Изтрий</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

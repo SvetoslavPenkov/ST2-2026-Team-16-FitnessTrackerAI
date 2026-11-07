@@ -1,0 +1,41 @@
+@{
+    ViewData["Title"] = "ИИ Консултант";
+}
+
+<h2 class="mb-4">ИИ Фитнес Консултант & Мултимодален Анализ</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Advice" method="post" enctype="multipart/form-data" class="card p-3 shadow-sm">
+            <div class="mb-3">
+                <label class="form-label">Изберете ИИ модел:</label>
+                <select name="provider" class="form-select">
+                    <option value="remote">Отдалечен (Google Gemini API)</option>
+                    <option value="local">Локален (Ollama / Llama3)</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Въпрос / Запитване:</label>
+                <textarea name="prompt" class="form-control" rows="3" placeholder="напр. Направи ми хранителен план..."></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Снимка за мултимодален анализ (храна, уред):</label>
+                <input type="file" name="imageFile" class="form-control" accept="image/*" />
+            </div>
+
+            <button type="submit" class="btn btn-primary">Изпрати</button>
+        </form>
+    </div>
+
+    <div class="col-md-6">
+        @if (ViewBag.Response != null)
+        {
+            <div class="card p-3 border-success shadow-sm">
+                <h4 class="text-success">Отговор от ИИ (@ViewBag.Provider):</h4>
+                <p style="white-space: pre-line;">@ViewBag.Response</p>
+            </div>
+        }
+    </div>
+</div>

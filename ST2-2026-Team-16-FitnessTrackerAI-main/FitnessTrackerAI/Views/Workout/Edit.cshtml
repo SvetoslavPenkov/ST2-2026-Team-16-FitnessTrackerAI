@@ -1,0 +1,54 @@
+@model FitnessTrackerAI.Models.Workout
+@{
+    ViewData["Title"] = "Редактирай Тренировка";
+}
+
+<h2>Редактирай Тренировка</h2>
+
+<form asp-action="Edit" method="post" class="col-md-6 mt-3">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Category" class="form-label"></label>
+        <select asp-for="Category" class="form-select">
+            <option value="Силова">Силова</option>
+            <option value="Кардио">Кардио</option>
+            <option value="Йога">Йога</option>
+            <option value="Кросфит">Кросфит</option>
+        </select>
+        <span asp-validation-for="Category" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="DurationMinutes" class="form-label"></label>
+        <input asp-for="DurationMinutes" type="number" class="form-control" />
+        <span asp-validation-for="DurationMinutes" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="CaloriesBurned" class="form-label"></label>
+        <input asp-for="CaloriesBurned" type="number" class="form-control" />
+        <span asp-validation-for="CaloriesBurned" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Date" class="form-label"></label>
+        <input asp-for="Date" type="date" class="form-control" />
+        <span asp-validation-for="Date" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Notes" class="form-label"></label>
+        <textarea asp-for="Notes" class="form-control"></textarea>
+        <span asp-validation-for="Notes" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Обнови</button>
+    <a asp-action="Index" class="btn btn-secondary">Отказ</a>
+</form>
